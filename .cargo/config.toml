@@ -1,0 +1,41 @@
+[unstable]
+build-std = ["core", "alloc", "panic_abort"]
+build-std-features = [
+  "optimize_for_size",
+  # "panic_immediate_abort",
+]
+codegen-backend = true
+
+[build]
+target = "riscv32imc-unknown-none-elf" # esp32c3
+# target = "riscv32imac-unknown-none-elf" # esp32c6
+
+[target.'cfg(all(target_arch = "riscv32", target_os = "none"))']
+runner = "espflash flash -B 921600 -M -L defmt"
+rustflags = [
+  "-Cforce-frame-pointers=yes",
+  "-Clink-arg=--nmagic",
+  "-Clink-arg=-Tdefmt.x",
+  "-Clink-arg=-Tlinkall.x",
+]
+
+[env]
+DEFMT_LOG = "esp_ipaddr=info"
+# ESP_HAL_CONFIG_FLIP_LINK = "true" # esp32c6
+ESP_WIFI_CONFIG_COUNTRY_CODE = "FI"
+
+[profile.dev]
+opt-level = "s"
+codegen-backend = "llvm"
+panic = "abort"
+strip = false
+debug = true
+
+[profile.release]
+opt-level = "s"
+codegen-units = 1
+codegen-backend = "llvm"
+panic = "abort"
+strip = false
+debug = "line-tables-only"
+lto = true

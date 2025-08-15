@@ -1,0 +1,6 @@
+# personal env
+/.envrc
+
+# build artifacts
+/target/
+/result
