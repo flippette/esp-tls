@@ -4,7 +4,6 @@ version = "0.1.0"
 edition = "2024"
 
 [features]
-# default = ["esp32c6"]
 esp32c3 = [
   "esp-backtrace/esp32c3",
   "esp-bootloader-esp-idf/esp32c3",
@@ -23,6 +22,7 @@ esp32c6 = [
   "esp-println/esp32c6",
   "esp-wifi/esp32c6",
 ]
+debug-heap = []
 
 [dependencies]
 defmt = "1"

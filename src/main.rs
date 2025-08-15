@@ -57,12 +57,17 @@ async fn main(s: Spawner) -> Result<(), Error> {
   esp_hal_embassy::init(syst.alarm0);
   info!("hal init!");
 
-  esp_alloc::heap_allocator! { size: 64000 }
+  esp_alloc::heap_allocator! { size: 40_000 }
   esp_alloc::heap_allocator! {
     #[unsafe(link_section = ".dram2_uninit")]
-    size: 64000
+    size: 64_000
   }
   info!("heap init!");
+
+  #[cfg(feature = "debug-heap")]
+  s.spawn(show_heap_usage())?;
+  #[cfg(feature = "debug-heap")]
+  info!("heap usage monitor task spawned!");
 
   let mut rng = Rng::new(p.RNG);
   let wifi = make_static! { EspWifiController =
@@ -174,6 +179,16 @@ async fn main(s: Spawner) -> Result<(), Error> {
   }
 
   Ok(())
+}
+
+#[cfg(feature = "debug-heap")]
+#[task]
+async fn show_heap_usage() -> ! {
+  loop {
+    info!("heap usage:");
+    println!("{}", esp_alloc::HEAP.stats());
+    Timer::after_secs(1).await;
+  }
 }
 
 #[task]
