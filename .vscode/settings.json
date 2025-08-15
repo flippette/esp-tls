@@ -2,7 +2,10 @@
   "rust-analyzer": {
     "cargo": {
       "allFeatures": false,
-      "allTargets": false
+      "allTargets": false,
+
+      "features": ["esp32c6"],
+      "target": "riscv32imac-unknown-none-elf"
     }
   }
 }

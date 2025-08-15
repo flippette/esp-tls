@@ -17,9 +17,20 @@
         rustBin = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
         craneLib = (crane.mkLib pkgs).overrideToolchain rustBin;
 
-        # common args to both deps & package
+        # include the PEM certificate as well
+        unfilteredRoot = ./.;
+        src = with pkgs;
+          lib.fileset.toSource {
+            root = unfilteredRoot;
+            fileset = lib.fileset.unions [
+              (craneLib.fileset.commonCargoSources unfilteredRoot)
+              ./check.tls.support.chain.pem
+            ];
+          };
+
+        # common args between packages
         commonArgs = rec {
-          src = craneLib.cleanCargoSource ./.;
+          inherit src;
           strictDeps = true;
 
           cargoVendorDir = craneLib.vendorMultipleCargoDeps {
@@ -36,14 +47,29 @@
 
           doCheck = false;
         };
-
-        # build dependencies separately
-        cargoArtifacts = craneLib.buildDepsOnly commonArgs;
       in with pkgs; {
         devShells.default = mkShell {
           buildInputs = [ cargo-binutils cargo-bloat espflash rustBin ];
         };
-        packages.default =
-          craneLib.buildPackage (commonArgs // { inherit cargoArtifacts; });
+
+        packages = rec {
+          default = esp32c6;
+
+          esp32c3 = craneLib.buildPackage (commonArgs // {
+            cargoExtraArgs = pkgs.lib.concatStringsSep " " [
+              "--target riscv32imc-unknown-none-elf"
+              "--features esp32c3"
+            ];
+          });
+
+          esp32c6 = craneLib.buildPackage (commonArgs // {
+            cargoExtraArgs = pkgs.lib.concatStringsSep " " [
+              "--target riscv32imac-unknown-none-elf"
+              "--features esp32c6"
+            ];
+
+            ESP_HAL_CONFIG_FLIP_LINK = "true";
+          });
+        };
       });
 }

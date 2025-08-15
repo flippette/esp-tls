@@ -1,50 +1,46 @@
 [package]
-name = "esp-ipaddr"
+name = "esp-tls"
 version = "0.1.0"
 edition = "2024"
 
 [features]
-default = ["esp32c3", "mbedtls", "net"]
+# default = ["esp32c6"]
 esp32c3 = [
   "esp-backtrace/esp32c3",
   "esp-bootloader-esp-idf/esp32c3",
   "esp-hal/esp32c3",
   "esp-hal-embassy/esp32c3",
-  "esp-mbedtls?/esp32c3",
+  "esp-mbedtls/esp32c3",
   "esp-println/esp32c3",
-  "esp-wifi?/esp32c3",
+  "esp-wifi/esp32c3",
 ]
 esp32c6 = [
   "esp-backtrace/esp32c6",
   "esp-bootloader-esp-idf/esp32c6",
   "esp-hal/esp32c6",
   "esp-hal-embassy/esp32c6",
-  "esp-mbedtls?/esp32c6",
+  "esp-mbedtls/esp32c6",
   "esp-println/esp32c6",
-  "esp-wifi?/esp32c6",
+  "esp-wifi/esp32c6",
 ]
-mbedtls = ["dep:esp-mbedtls", "wifi"]
-net = [
-  "dep:edge-nal",
-  "dep:edge-nal-embassy",
-  "dep:embassy-net",
-  "wifi",
-]
-wifi = ["dep:esp-alloc", "dep:esp-wifi"]
 
 [dependencies]
 defmt = "1"
+edge-http = "0.6"
+edge-nal = "0.5"
+enumset = "1"
 static_cell = "2"
-
-[dependencies.edge-nal]
-version = "0.5"
-optional = true
 
 [dependencies.edge-nal-embassy]
 version = "0.6"
 default-features = false
-features = ["defmt", "dhcpv4", "dns", "tcp"]
-optional = true
+features = [
+  "defmt",
+  "dhcpv4",
+  "dns",
+  "proto-ipv4",
+  "tcp",
+]
 
 [dependencies.embassy-executor]
 version = "0.7"
@@ -52,8 +48,13 @@ features = ["defmt", "nightly"]
 
 [dependencies.embassy-net]
 version = "0.7"
-features = ["defmt", "dhcpv4", "dns", "tcp"]
-optional = true
+features = [
+  "defmt",
+  "dhcpv4",
+  "dns",
+  "proto-ipv4",
+  "tcp",
+]
 
 [dependencies.embassy-time]
 version = "0.4"
@@ -62,7 +63,6 @@ features = ["defmt-timestamp-uptime-us"]
 [dependencies.esp-alloc]
 version = "0.8"
 features = ["defmt", "nightly"]
-optional = true
 
 [dependencies.esp-backtrace]
 version = "0.17"
@@ -88,7 +88,6 @@ features = ["defmt"]
 git = "https://github.com/esp-rs/esp-mbedtls.git"
 rev = "35e8ccd5999cf0c831c9b825491fd68581d108c2"
 features = ["async", "esp-hal"]
-optional = true
 
 [dependencies.esp-println]
 version = "0.15"
@@ -97,4 +96,3 @@ features = ["defmt-espflash"]
 [dependencies.esp-wifi]
 version = "0.15"
 features = ["defmt", "wifi"]
-optional = true

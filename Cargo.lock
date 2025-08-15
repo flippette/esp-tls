@@ -63,6 +63,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8"
 
 [[package]]
+name = "base64"
+version = "0.13.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9e1b586273c5702936fe7b7d6896644d8be71e6314cfe09d3167c95f712589e8"
+
+[[package]]
 name = "basic-toml"
 version = "0.1.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -460,6 +466,23 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "95249b50c6c185bee49034bcb378a49dc2b5dff0be90ff6616d31d64febab05d"
 dependencies = [
  "litrs",
+]
+
+[[package]]
+name = "edge-http"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e24b2fda685976c63d2cc159236803d59dd06c6cbd8d0e047cd3252dcd6df5ec"
+dependencies = [
+ "base64",
+ "edge-nal",
+ "embassy-futures",
+ "embassy-sync 0.7.0",
+ "embassy-time",
+ "embedded-io-async",
+ "heapless",
+ "httparse",
+ "sha1_smol",
 ]
 
 [[package]]
@@ -1004,27 +1027,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "esp-ipaddr"
-version = "0.1.0"
-dependencies = [
- "defmt 1.0.1",
- "edge-nal",
- "edge-nal-embassy",
- "embassy-executor",
- "embassy-net",
- "embassy-time",
- "esp-alloc",
- "esp-backtrace",
- "esp-bootloader-esp-idf",
- "esp-hal",
- "esp-hal-embassy",
- "esp-mbedtls",
- "esp-println",
- "esp-wifi",
- "static_cell",
-]
-
-[[package]]
 name = "esp-mbedtls"
 version = "0.1.0"
 source = "git+https://github.com/esp-rs/esp-mbedtls.git?rev=35e8ccd5999cf0c831c9b825491fd68581d108c2#35e8ccd5999cf0c831c9b825491fd68581d108c2"
@@ -1117,6 +1119,29 @@ dependencies = [
  "cfg-if",
  "document-features",
  "esp-metadata-generated",
+]
+
+[[package]]
+name = "esp-tls"
+version = "0.1.0"
+dependencies = [
+ "defmt 1.0.1",
+ "edge-http",
+ "edge-nal",
+ "edge-nal-embassy",
+ "embassy-executor",
+ "embassy-net",
+ "embassy-time",
+ "enumset",
+ "esp-alloc",
+ "esp-backtrace",
+ "esp-bootloader-esp-idf",
+ "esp-hal",
+ "esp-hal-embassy",
+ "esp-mbedtls",
+ "esp-println",
+ "esp-wifi",
+ "static_cell",
 ]
 
 [[package]]
@@ -1445,6 +1470,12 @@ checksum = "589533453244b0995c858700322199b2becb13b627df2851f64a2775d024abcf"
 dependencies = [
  "windows-sys 0.59.0",
 ]
+
+[[package]]
+name = "httparse"
+version = "1.10.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6dbf3de79e51f3d586ab4cb9d5c3e2c14aa28ed23d180cf89b4df0454a69cc87"
 
 [[package]]
 name = "humantime"
@@ -2099,6 +2130,12 @@ dependencies = [
  "serde",
  "unsafe-libyaml",
 ]
+
+[[package]]
+name = "sha1_smol"
+version = "1.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bbfa15b3dddfee50a0fff136974b3e1bde555604ba463834a7eb7deb6417705d"
 
 [[package]]
 name = "shlex"
