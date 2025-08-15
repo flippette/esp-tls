@@ -1,24 +1,41 @@
-rr3:
+r3 *args:
   cargo run --release \
     --target riscv32imc-unknown-none-elf \
-    --features esp32c3
+    --features esp32c3 \
+    {{args}}
 
-rr6:
+r6 *args:
   ESP_HAL_CONFIG_FLIP_LINK=true \
-    cargo run --release \
-      --target riscv32imac-unknown-none-elf \
-      --feature esp32c6
+  cargo run --release \
+    --target riscv32imac-unknown-none-elf \
+    --features esp32c6 \
+    {{args}}
 
-br3:
+b3 *args:
   cargo build --release \
     --target riscv32imc-unknown-none-elf \
-    --features esp32c3
+    --features esp32c3 \
+    {{args}}
 
-br6:
+b6 *args:
   ESP_HAL_CONFIG_FLIP_LINK=true \
-    cargo build --release \
-      --target riscv32imac-unknown-none-elf \
-      --features esp32c6
+  cargo build --release \
+    --target riscv32imac-unknown-none-elf \
+    --features esp32c6 \
+    {{args}}
+
+c3 *args:
+  cargo clippy --release \
+    --target riscv32imc-unknown-none-elf \
+    --features esp32c3 \
+    {{args}}
+
+c6 *args:
+  ESP_HAL_CONFIG_FLIP_LINK=true \
+  cargo clippy --release \
+    --target riscv32imac-unknown-none-elf \
+    --features esp32c6 \
+    {{args}}
 
 cl:
   cargo clean

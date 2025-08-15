@@ -6,10 +6,6 @@ build-std-features = [
 ]
 codegen-backend = true
 
-# [build]
-# target = "riscv32imc-unknown-none-elf" # esp32c3
-# target = "riscv32imac-unknown-none-elf" # esp32c6
-
 [target.'cfg(all(target_arch = "riscv32", target_os = "none"))']
 runner = "espflash flash -B 921600 -M -L defmt"
 rustflags = [
@@ -21,9 +17,8 @@ rustflags = [
 
 [env]
 DEFMT_LOG = "esp_tls=info"
-# ESP_HAL_CONFIG_FLIP_LINK = "true" # esp32c6
-WIFI_SSID = "example"
-WIFI_PASS = "blahblah"
+WIFI_SSID = "ouroboros"
+WIFI_PASS = "comeagain"
 
 [profile.dev]
 opt-level = "s"
@@ -38,5 +33,5 @@ codegen-units = 1
 codegen-backend = "llvm"
 panic = "abort"
 strip = false
-debug = "line-tables-only"
+debug = 2
 lto = true
